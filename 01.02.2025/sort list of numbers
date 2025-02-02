@@ -1,0 +1,3 @@
+lst = [int(x) for x in input("Enter a list of numbers: ").split()]
+lst.sort()
+print(f"Sorted list: {lst}")
