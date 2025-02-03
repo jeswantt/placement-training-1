@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <math.h>
+
+long long gcd(long long a, long long b) { return b == 0 ? a : gcd(b, a % b); }
+
+long long mod_exp(long long base, long long exp, long long mod) {
+    long long result = 1;
+    while (exp > 0) {
+        if (exp % 2) result = (result * base) % mod;
+        base = (base * base) % mod;
+        exp /= 2;
+    }
+    return result;
+}
+
+void rsa_encrypt_decrypt() {
+    long long p = 61, q = 53, n = p * q, phi = (p - 1) * (q - 1);
+    long long e = 17, d = 2753;
+    long long msg = 89, enc, dec;
+
+    enc = mod_exp(msg, e, n);
+    dec = mod_exp(enc, d, n);
+
+    printf("Original: %lld\nEncrypted: %lld\nDecrypted: %lld\n", msg, enc, dec);
+}
+
+int main() {
+    rsa_encrypt_decrypt();
+    return 0;
+}
