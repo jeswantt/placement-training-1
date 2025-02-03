@@ -1,0 +1,59 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int key, value;
+    struct Node* next, *prev;
+};
+
+struct Node* head = NULL, *tail = NULL;
+int cacheSize = 3, count = 0;
+
+void put(int key, int value) {
+    struct Node* temp = head;
+    while (temp) {
+        if (temp->key == key) {
+            temp->value = value;
+            return;
+        }
+        temp = temp->next;
+    }
+
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->key = key, newNode->value = value;
+    newNode->next = head, newNode->prev = NULL;
+    
+    if (head) head->prev = newNode;
+    head = newNode;
+    if (!tail) tail = head;
+
+    if (count < cacheSize) count++;
+    else {
+        struct Node* temp = tail;
+        tail = tail->prev;
+        if (tail) tail->next = NULL;
+        free(temp);
+    }
+}
+
+void get(int key) {
+    struct Node* temp = head;
+    while (temp) {
+        if (temp->key == key) {
+            printf("Found: %d\n", temp->value);
+            return;
+        }
+        temp = temp->next;
+    }
+    printf("Not Found\n");
+}
+
+int main() {
+    put(1, 10);
+    put(2, 20);
+    put(3, 30);
+    get(1);
+    put(4, 40);
+    get(2);
+    return 0;
+}
