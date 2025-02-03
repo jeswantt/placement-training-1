@@ -1,0 +1,25 @@
+#include <stdio.h>
+
+#define MEM_SIZE 1024
+
+char memory[MEM_SIZE];
+int freeIndex = 0;
+
+void* my_malloc(int size) {
+    if (freeIndex + size > MEM_SIZE) return NULL;
+    void* ptr = &memory[freeIndex];
+    freeIndex += size;
+    return ptr;
+}
+
+void my_free(int size) { freeIndex -= size; }
+
+int main() {
+    int* p = (int*)my_malloc(sizeof(int) * 5);
+    if (p) {
+        for (int i = 0; i < 5; i++) p[i] = i * 10;
+        for (int i = 0; i < 5; i++) printf("%d ", p[i]);
+        my_free(sizeof(int) * 5);
+    }
+    return 0;
+}
