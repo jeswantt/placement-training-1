@@ -1,0 +1,16 @@
+def knows(a, b):
+    return False
+
+def find_celebrity(n):
+    celebrity = 0
+    for i in range(1, n):
+        if knows(celebrity, i):
+            celebrity = i
+
+    for i in range(n):
+        if i != celebrity and (knows(celebrity, i) or not knows(i, celebrity)):
+            return -1
+    return celebrity
+
+n = 4
+print(find_celebrity(n))
